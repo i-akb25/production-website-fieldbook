@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0",
+  "fictional": true,
+  "route": {
+    "pattern": "/reading-list",
+    "authentication": "public",
+    "roles": ["anonymous-reader"],
+    "title": "Northstar Reading List",
+    "indexing": "noindex",
+    "owner": "fictional-content-owner"
+  },
+  "purpose": {
+    "audience": "Fictional readers evaluating a curated list",
+    "task": "Inspect available reading entries and open one source",
+    "success": "The reader understands the list status and opens an intended source",
+    "non_goals": ["User accounts", "Purchases", "Personal recommendations", "User-submitted content"]
+  },
+  "content": {
+    "source": "A reviewed local JSON file in the fictional product",
+    "freshness": "The build displays the content review date and owner",
+    "fallback": "Show an honest unavailable state without inventing entries"
+  },
+  "data": {
+    "authority": "The server-rendered reviewed content file is canonical",
+    "reads": ["Approved reading-list entries"],
+    "writes": [],
+    "classification": "internal"
+  },
+  "states": ["loading", "empty", "offline", "error", "success", "denied", "rate-limited"],
+  "responsive": [
+    "At narrow widths metadata moves below the title without changing reading order",
+    "Cards become a single list; text reflows at 400 percent zoom without horizontal scrolling"
+  ],
+  "accessibility": [
+    "The page uses one h1, a labelled list, descriptive links, and visible keyboard focus",
+    "Status changes use a polite live region and motion respects reduced-motion preference"
+  ],
+  "performance": {
+    "lcp_candidate": "The page heading and first text entry; no hero image is required",
+    "budgets": ["No client JavaScript required for initial reading", "No third-party request on initial load"]
+  },
+  "security": [
+    "Content is schema-validated and output-encoded before rendering",
+    "External URLs use an allow-listed https scheme and safe new-tab behavior when applicable"
+  ],
+  "analytics": {
+    "decision_question": "Fictional example only: can a reader reach an intended source?",
+    "events": ["reading_source_opened"],
+    "retention": "Thirty days in the fictional example; not approved for real use"
+  },
+  "acceptance": [
+    "Empty, offline, error, success, denied, and rate-limited states have deterministic fixtures",
+    "Keyboard, screen-reader, 320px, landscape, long-title, and 400 percent zoom checks pass",
+    "No request reaches a production service or real analytics endpoint"
+  ]
+}
+

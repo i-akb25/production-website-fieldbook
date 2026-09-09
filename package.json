@@ -1,0 +1,17 @@
+{
+  "name": "@akb-studio/production-website-fieldbook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Companion templates and controls for The Production Website, Edition 1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "checksums:write": "node scripts/checksums.mjs --write",
+    "checksums:verify": "node scripts/checksums.mjs --verify"
+  },
+  "license": "SEE LICENSES DIRECTORY"
+}
+

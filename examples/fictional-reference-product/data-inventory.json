@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "fictional": true,
+  "product": "Northstar Reading List",
+  "reviewed_at": "2026-09-08",
+  "records": [
+    {
+      "id": "DATA-001",
+      "data_category": "Fictional source-open event",
+      "source": "Fictional page interaction",
+      "purpose": "Evaluate whether the example journey reaches its intended source",
+      "legal_basis_or_ground": "Unassigned; fictional example only",
+      "system": "Isolated fictional event sink",
+      "region": "Test-only",
+      "classification": "internal",
+      "access": ["fictional-product-owner"],
+      "recipients": [],
+      "retention": "Thirty days, then aggregate deletion in the fictional design",
+      "deletion_proof": "Synthetic test asserts expiry and removal from the isolated sink",
+      "owner": "fictional-data-owner"
+    }
+  ]
+}
+

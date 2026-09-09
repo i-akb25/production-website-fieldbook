@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://akb.studio/schemas/production-website/page-spec.schema.json",
+  "title": "Production Website page specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "fictional", "route", "purpose", "content", "data", "states", "responsive", "accessibility", "performance", "security", "analytics", "acceptance"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "fictional": { "type": "boolean" },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pattern", "authentication", "roles", "title", "indexing", "owner"],
+      "properties": {
+        "pattern": { "type": "string", "pattern": "^/" },
+        "authentication": { "type": "string", "enum": ["public", "optional", "required"] },
+        "roles": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "title": { "type": "string", "minLength": 3 },
+        "indexing": { "type": "string", "enum": ["index", "noindex"] },
+        "owner": { "type": "string", "minLength": 3 }
+      }
+    },
+    "purpose": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audience", "task", "success", "non_goals"],
+      "properties": {
+        "audience": { "type": "string", "minLength": 5 },
+        "task": { "type": "string", "minLength": 5 },
+        "success": { "type": "string", "minLength": 5 },
+        "non_goals": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "content": { "type": "object", "required": ["source", "freshness", "fallback"], "properties": { "source": { "type": "string" }, "freshness": { "type": "string" }, "fallback": { "type": "string" } } },
+    "data": { "type": "object", "required": ["authority", "reads", "writes", "classification"], "properties": { "authority": { "type": "string" }, "reads": { "type": "array", "items": { "type": "string" } }, "writes": { "type": "array", "items": { "type": "string" } }, "classification": { "type": "string", "enum": ["public", "internal", "confidential", "restricted"] } } },
+    "states": { "type": "array", "minItems": 5, "items": { "type": "string", "enum": ["loading", "empty", "stale", "offline", "validation", "error", "partial", "success", "denied", "rate-limited"] } },
+    "responsive": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+    "accessibility": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+    "performance": { "type": "object", "required": ["lcp_candidate", "budgets"], "properties": { "lcp_candidate": { "type": "string" }, "budgets": { "type": "array", "minItems": 1, "items": { "type": "string" } } } },
+    "security": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+    "analytics": { "type": "object", "required": ["decision_question", "events", "retention"], "properties": { "decision_question": { "type": "string" }, "events": { "type": "array", "items": { "type": "string" } }, "retention": { "type": "string" } } },
+    "acceptance": { "type": "array", "minItems": 2, "items": { "type": "string" } }
+  }
+}

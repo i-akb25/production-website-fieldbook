@@ -1,0 +1,18 @@
+{
+  "repository": "production-website-fieldbook",
+  "repository_version": "1.0.0",
+  "book": "The Production Website",
+  "book_edition": "1.0",
+  "publisher": "AKB Studio",
+  "release_date": "2026-09-08",
+  "schema_version": "1.0.0",
+  "status": "edition-1-companion-release",
+  "architecture_case_studies_included": false,
+  "personal_project_examples_included": false,
+  "validation_runtime": "Node.js 24",
+  "verified_ci_actions": {
+    "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+    "actions/setup-node": "820762786026740c76f36085b0efc47a31fe5020"
+  }
+}
+
