@@ -2,8 +2,9 @@ import { createHash } from "node:crypto";
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outputName = "CHECKSUMS.sha256";
 
 async function filesUnder(directory) {
@@ -17,11 +18,21 @@ async function filesUnder(directory) {
   return result;
 }
 
+function canonicalContent(content) {
+  if (content.includes(0)) return content;
+
+  const text = content.toString("utf8");
+  if (!Buffer.from(text, "utf8").equals(content)) return content;
+
+  return Buffer.from(text.replace(/\r\n/g, "\n"), "utf8");
+}
+
 async function manifest() {
   const files = (await filesUnder(root)).sort((a, b) => a.localeCompare(b));
   const lines = [];
   for (const file of files) {
-    const digest = createHash("sha256").update(await readFile(file)).digest("hex");
+    const content = canonicalContent(await readFile(file));
+    const digest = createHash("sha256").update(content).digest("hex");
     lines.push(`${digest}  ${path.relative(root, file).split(path.sep).join("/")}`);
   }
   return `${lines.join("\n")}\n`;
@@ -45,4 +56,3 @@ if (mode === "--write") {
   console.error("Use --write or --verify");
   process.exitCode = 2;
 }
-
