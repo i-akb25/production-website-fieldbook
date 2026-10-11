@@ -1,11 +1,9 @@
 {
   "name": "fieldbook",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Local-first production-readiness evidence and review CLI for websites and software projects.",
   "type": "module",
-  "bin": {
-    "fieldbook": "./bin/fieldbook.mjs"
-  },
+  "bin": "bin/fieldbook.mjs",
   "engines": {
     "node": ">=20"
   },
