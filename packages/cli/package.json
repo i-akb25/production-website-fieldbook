@@ -1,7 +1,7 @@
 {
-  "name": "@akb-studio/fieldbook",
-  "version": "0.1.0",
-  "description": "Local-first production-readiness checks and records for The Production Website",
+  "name": "fieldbook",
+  "version": "1.0.0",
+  "description": "Local-first production-readiness evidence and review CLI for websites and software projects.",
   "type": "module",
   "bin": {
     "fieldbook": "./bin/fieldbook.mjs"
@@ -10,13 +10,35 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "prepublishOnly": "npm test"
   },
   "files": [
     "bin",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
-  "license": "SEE LICENSES DIRECTORY",
+  "keywords": [
+    "production-readiness",
+    "release",
+    "checklist",
+    "security",
+    "privacy",
+    "accessibility",
+    "devops",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-akb25/production-website-fieldbook.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://fieldbook-pro.vercel.app/",
+  "bugs": {
+    "url": "https://github.com/i-akb25/production-website-fieldbook/issues"
+  },
+  "author": "AKB Studio",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   }
