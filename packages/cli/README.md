@@ -212,7 +212,7 @@ Fieldbook and CodeVet have separate responsibilities. CodeVet scans for security
 Generate a report with CodeVet:
 
 ```sh
-npx codevet scan --json codevet-report.json
+npx codevet-cli scan --json codevet-report.json
 ```
 
 Then inspect it with Fieldbook:
