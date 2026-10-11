@@ -124,7 +124,7 @@ Use dedicated security, accessibility, legal, privacy, and operational review pr
 Fieldbook can consume an existing CodeVet JSON report without running CodeVet itself:
 
 ```sh
-npx codevet scan --json codevet-report.json
+npx codevet-cli scan --json codevet-report.json
 npx fieldbook codevet codevet-report.json --attach
 ```
 
