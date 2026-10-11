@@ -1,63 +1,155 @@
-[![Validate companion repository](https://github.com/i-akb25/production-website-fieldbook/actions/workflows/validate.yml/badge.svg)](https://github.com/i-akb25/production-website-fieldbook/actions/workflows/validate.yml)
+[![Validate repository](https://github.com/i-akb25/production-website-fieldbook/actions/workflows/validate.yml/badge.svg)](https://github.com/i-akb25/production-website-fieldbook/actions/workflows/validate.yml)
 
-# The Production Website Companion Repository
+# Fieldbook
 
-Practical adoption material for **The Production Website**, Edition 1.0, written by AKB and published by AKB Studio.
+Fieldbook is a local-first production-readiness toolkit for websites and software projects.
 
-This repository turns the book's guidance into reusable records, machine-readable controls, validation scripts, and a safe fictional example. The PDF remains the editorial authority. This repository is the implementation layer.
+It combines a practical CLI with reusable controls, evidence templates, schemas, agent boundaries, and release records. The goal is not to produce a fake readiness score. The goal is to make release evidence, ownership, unresolved risk, and manual sign-off explicit.
 
-## What is included
+Website: https://fieldbook-pro.vercel.app/
 
-- `agent/`: bounded instructions and machine-readable controls for coding agents
-- `templates/`: the 14 operational templates from Appendix A
-- `schemas/`: JSON Schemas for controls, page specifications, and data inventory records
-- `examples/fictional-reference-product/`: completed, explicitly fictional records
-- `scripts/`: dependency-free release and validation tooling
-- `integrations/codevet/`: a documented boundary for a future verified integration
+Support: akbsupportinfo@gmail.com
 
-Architecture Case Studies and personal-project examples are intentionally excluded from Edition 1.
+## CLI
 
-## Start here
+The npm package name is:
 
-1. Read the book sections that apply to the work.
-2. Copy only the templates the project needs. Do not fill every file for appearance.
-3. Replace every `<!-- REQUIRED: ... -->` marker with approved project facts.
-4. Put `agent/AGENTS.md` at the relevant repository root or merge its controls into the repository's existing agent instructions.
-5. Map each applicable control to implementation, tests, evidence, owner, and any time-bounded exception.
-6. Run validation before review:
+```text
+fieldbook
+```
 
-   ```sh
-   npm run validate
-   ```
+After publication:
 
-7. Run `npm run checksums:verify` before publishing an unchanged release archive.
+```sh
+npm install --global fieldbook
+```
 
-The tooling has no runtime package dependencies. `agent/controls.yaml` deliberately uses the JSON-compatible subset of YAML, so the validator can parse it without installing a YAML package.
+Or:
 
-## Control language
+```sh
+npx fieldbook check
+```
+
+Requires Node.js 20 or newer.
+
+### Quick start
+
+```sh
+fieldbook init
+fieldbook check
+fieldbook review FB-PRIVACY approved --owner "release owner" --evidence "docs/privacy-review.md"
+fieldbook report
+fieldbook doctor
+```
+
+Fieldbook stores its manual review record at:
+
+```text
+.fieldbook/readiness.json
+```
+
+It refuses to overwrite an existing record during `init`.
+
+## What the CLI observes
+
+Fieldbook can detect repository signals such as:
+
+- project documentation
+- ignore rules
+- dependency lockfiles or integrity files
+- a package test script
+- GitHub Actions workflows
+- a repository license
+- a security reporting policy
+
+These are observations, not pass/fail claims. The presence of a file does not prove that the underlying implementation is correct.
+
+## Human review gates
+
+Fieldbook tracks explicit manual review state for:
+
+- authorization and access controls
+- privacy, data inventory, consent and retention
+- threat modeling and security verification
+- accessibility and keyboard behavior
+- rollback and recovery
+- legal and contractual review
+- performance and real-device testing
+
+A manually entered `approved` state is evidence bookkeeping only. Fieldbook does not independently certify the review.
+
+## Repository structure
+
+- `packages/cli/` — npm CLI package
+- `agent/` — bounded coding-agent instructions and machine-readable controls
+- `templates/` — operational review and evidence templates
+- `schemas/` — JSON schemas for structured records
+- `examples/fictional-reference-product/` — fictional example records
+- `scripts/` — repository validation and checksum tooling
+- `website/` — static Fieldbook website
+- `integrations/codevet/` — documented optional security-tool boundary
+
+## Privacy and security model
+
+The Fieldbook CLI is local-first.
+
+It has:
+
+- no account requirement
+- no database
+- no telemetry
+- no runtime dependencies
+- no network calls from the CLI
+- no automatic upload of repository content
+
+Do not store secrets, production exports, customer data, credentials, or sensitive incident evidence inside `.fieldbook/readiness.json`.
+
+## What Fieldbook does not do
+
+Fieldbook is not:
+
+- a vulnerability scanner
+- a penetration-testing tool
+- an accessibility certification service
+- a legal compliance engine
+- a privacy certification service
+- a production approval authority
+
+Use dedicated security, accessibility, legal, privacy, and operational review processes where required.
+
+## Companion controls
+
+The repository also contains the implementation material for **The Production Website, Edition 1.0**, published by AKB Studio.
+
+The control language uses:
 
 | Level | Meaning |
 | --- | --- |
-| `MUST` | Required when the control is applicable. Failure blocks release unless the control explicitly permits an approved exception. |
-| `SHOULD` | Expected default. A deviation needs a recorded reason, owner, evidence, and review date. |
-| `MAY` | Optional technique. Using it does not replace applicable MUST or SHOULD controls. |
+| `MUST` | Required when applicable unless the control explicitly permits an approved exception. |
+| `SHOULD` | Expected default; deviations require a documented reason and owner. |
+| `MAY` | Optional technique that does not replace applicable requirements. |
 
-Control IDs are stable within an edition. A later release may clarify or strengthen a control without silently changing its meaning. Breaking changes require a new major repository version and an explicit compatibility note.
+The repository validator checks structure and consistency only. It is not a production-readiness certification.
 
-## Important boundaries
+## Development
 
-- This material does not certify legal, privacy, accessibility, security, payment, or contractual compliance.
-- Do not use the fictional example as public legal text or production configuration.
-- Never add secrets, real customer data, production exports, real payments, or private incident evidence.
-- Security testing is limited to systems you own or are explicitly authorized to assess.
-- Coding agents may propose and verify bounded changes. Humans retain authority for product truth, law, privacy, security, money, migrations, destructive actions, and production release.
-- The book itself is not included here and remains subject to its own copyright notice.
+```sh
+npm run validate
+node --test packages/cli/test/*.test.mjs
+npm run checksums:verify
+```
 
-## Release identity
+## Documentation
 
-- Repository version: `1.0.0`
-- Implemented book edition: `1.0`
-- Publisher: AKB Studio
-- Status: Edition 1 companion release
+- [Adoption guide](docs/ADOPTION_GUIDE.md)
+- [Release process](docs/RELEASE_PROCESS.md)
+- [Security policy](SECURITY.md)
+- [Privacy](PRIVACY.md)
+- [Legal disclaimer](LEGAL_DISCLAIMER.md)
+- [Contributing](CONTRIBUTING.md)
 
-See the [adoption guide](docs/ADOPTION_GUIDE.md), [release process](docs/RELEASE_PROCESS.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [PRIVACY.md](PRIVACY.md), and [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md).
+## License
+
+The CLI code is MIT licensed. Documentation licensing is described under `LICENSES/`.
+
+© 2026 AKB Studio
