@@ -142,7 +142,7 @@ fieldbook codevet <report.json> [--attach] [--json]
 CodeVet can generate the input with:
 
 ```sh
-npx codevet scan --json codevet-report.json
+npx codevet-cli scan --json codevet-report.json
 ```
 
 Examples:
