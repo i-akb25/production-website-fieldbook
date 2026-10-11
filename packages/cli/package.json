@@ -1,6 +1,6 @@
 {
   "name": "fieldbook",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Local-first production-readiness evidence and review CLI for websites and software projects.",
   "type": "module",
   "bin": {
@@ -16,6 +16,7 @@
   "files": [
     "bin",
     "README.md",
+    "COMMANDS.md",
     "LICENSE"
   ],
   "keywords": [
