@@ -18,7 +18,7 @@ function cli(dir,...args) {
 test("version is stable",()=>sandbox(dir=>{
   const result=cli(dir,"--version");
   assert.equal(result.status,0,result.stderr);
-  assert.equal(result.stdout.trim(),"1.0.0");
+  assert.equal(result.stdout.trim(),"1.0.1");
 }));
 
 test("init creates a local review and never overwrites it",()=>sandbox(dir=>{
@@ -27,7 +27,7 @@ test("init creates a local review and never overwrites it",()=>sandbox(dir=>{
   const file=path.join(dir,".fieldbook/readiness.json");
   const before=readFileSync(file,"utf8");
   const parsed=JSON.parse(before);
-  assert.equal(parsed.fieldbook_version,"1.0.0");
+  assert.equal(parsed.fieldbook_version,"1.0.1");
   assert.equal(parsed.reviews["FB-PRIVACY"].status,"unreviewed");
   const second=cli(dir,"init");
   assert.equal(second.status,2);
