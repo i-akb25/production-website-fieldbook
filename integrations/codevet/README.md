@@ -1,17 +1,50 @@
-# CodeVet integration boundary
+# CodeVet integration
 
-No CodeVet integration is implemented or claimed in this Edition 1 companion release.
+Fieldbook can consume a **local CodeVet JSON report as optional release evidence**.
 
-A future integration may map verified CodeVet findings to stable control IDs, attach raw and normalized evidence, and distinguish these states explicitly:
+The integration is intentionally one-way and local:
 
-- scan not run;
-- partial scan;
-- tool error;
-- scan completed with no findings;
+1. CodeVet performs security scanning.
+2. CodeVet writes its machine-readable JSON report.
+3. Fieldbook reads that file and normalizes coverage and counts.
+4. Fieldbook may attach the normalized summary to `.fieldbook/readiness.json`.
+
+Example:
+
+```sh
+npx codevet-cli scan --json codevet-report.json
+npx fieldbook codevet codevet-report.json --attach
+```
+
+## Boundary
+
+CodeVet and Fieldbook do not replace one another.
+
+- **CodeVet** answers security-scanning questions: exposed secrets, known vulnerable dependencies, selected hygiene patterns, and personal-data-flow findings.
+- **Fieldbook** answers release-evidence questions: which artifacts were observed, which manual gates remain unresolved, who owns a review, and what evidence was attached.
+
+Fieldbook does **not** execute CodeVet automatically. This preserves Fieldbook's dependency-free, no-network CLI behavior and lets users choose when security scanning runs.
+
+## Evidence semantics
+
+Fieldbook preserves the distinction between:
+
+- completed checks;
+- skipped checks;
+- failed checks;
+- non-applicable checks;
 - findings present;
-- policy pass after applicable review.
+- high/critical findings present where CodeVet provides severity;
+- no findings reported by completed checks.
 
-It must also use pinned and reviewed tool versions, least privilege, redacted logs, traceable suppressions, and reproducible evidence. CodeVet remains an orchestration and CLI layer around established scanners. It is not a substitute for engineering judgment, threat modelling, authorization testing, or penetration testing.
+A CodeVet report with skipped or failed applicable checks is marked incomplete.
 
-Do not add a package command, repository URL, scanner claim, output contract, or automated pass/fail mapping here until the integration exists and has been independently verified.
+A report with no findings is **not** converted into a security guarantee.
 
+Fieldbook never automatically changes `FB-SECURITY` to `approved`. Human review remains required.
+
+## Data minimization
+
+When `--attach` is used, Fieldbook stores only normalized counts, coverage state, interpretation, and the local report path. Raw findings are not copied into the readiness record. This avoids duplicating secret values or sensitive evidence.
+
+The original CodeVet report remains under the user's control and should be handled according to the project's security policy.

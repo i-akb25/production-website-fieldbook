@@ -37,8 +37,20 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
 
-      - name: Show npm version
-        run: npm --version
+      - name: Verify npm supports trusted publishing
+        shell: bash
+        run: |
+          npm --version
+          node - <<'NODE'
+          const { execFileSync } = require("node:child_process");
+          const version = execFileSync("npm", ["--version"], { encoding: "utf8" }).trim();
+          const [major, minor, patch] = version.split(".").map(Number);
+          const ok = major > 11 || (major === 11 && (minor > 5 || (minor === 5 && patch >= 1)));
+          if (!ok) {
+            console.error(`Trusted publishing requires npm >= 11.5.1; found ${version}.`);
+            process.exit(1);
+          }
+          NODE
 
       - name: Test CLI
         run: npm test
@@ -46,7 +58,14 @@ jobs:
       - name: Inspect publish contents
         run: npm pack --dry-run
 
-      - name: Publish fieldbook
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Refuse an already-published version
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view "fieldbook@$VERSION" version >/dev/null 2>&1; then
+            echo "fieldbook@$VERSION already exists on npm."
+            exit 1
+          fi
+
+      - name: Publish fieldbook using npm trusted publishing
+        run: npm publish --access public

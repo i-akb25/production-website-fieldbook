@@ -228,7 +228,7 @@
           <div class="feature-stack">
             <article><p class="section-kicker">Agents</p><h3>Bounded instructions</h3><p>Give coding agents explicit authority limits and stop conditions instead of unlimited autonomy.</p></article>
             <article><p class="section-kicker">Validation</p><h3>Schemas and checks</h3><p>Validate structure, safety markers, examples, checksums and selected repository invariants.</p></article>
-            <article><p class="section-kicker">CLI</p><h3>Local readiness record</h3><p>Run lightweight repository checks and preserve manual review states without uploading project data.</p></article>
+            <article><p class="section-kicker">CLI</p><h3>Local readiness record</h3><p>Inspect framework-neutral repository evidence, preserve manual review state, and optionally attach normalized CodeVet evidence without uploading project data.</p></article>
           </div>
         </div>
       </section>
@@ -236,14 +236,17 @@
       <section id="start">
         <div class="section-head">
           <div><p class="section-kicker">Get started</p><h2>Adopt only what applies.</h2></div>
-          <p class="section-copy">Install Fieldbook from npm after release, run it in your project, and complete the human review record before treating any result as release evidence.</p>
+          <p class="section-copy">Install Fieldbook from npm, run it in your project, and complete the human review record before treating any result as release evidence.</p>
         </div>
         <div class="terminal-wrap">
-          <pre class="terminal"><code><span># from the repository root</span>
-node packages/cli/bin/fieldbook.mjs init
-node packages/cli/bin/fieldbook.mjs check
-node packages/cli/bin/fieldbook.mjs report --json
-node packages/cli/bin/fieldbook.mjs doctor</code></pre>
+          <pre class="terminal"><code><span># run without a global install</span>
+npx fieldbook init
+npx fieldbook check
+npx fieldbook report --json
+
+<span># optional security evidence</span>
+npx codevet-cli scan --json codevet-report.json
+npx fieldbook codevet codevet-report.json --attach</code></pre>
           <aside class="release-note">
             <p class="section-kicker">Current boundary</p>
             <h3>Advisory, by design.</h3>

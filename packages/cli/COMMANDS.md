@@ -66,11 +66,22 @@ Automatic observations currently include:
 - `FB-CI` — GitHub Actions workflow
 - `FB-LICENSE` — license record
 - `FB-SECURITY-POLICY` — security reporting policy
+- `FB-MANIFEST` — recognized project manifest
+- `FB-LOCK-CONSISTENCY` — multiple lock/integrity families (attention state)
+- `FB-BUILD` — build or compile script
+- `FB-LINT` — lint or check script
+- `FB-TYPECHECK` — type-check script
+- `FB-RELEASE-AUTOMATION` — release/publish/deploy workflow
+- `FB-OWNERSHIP` — CODEOWNERS
+- `FB-DEPENDENCY-AUTOMATION` — Dependabot or Renovate configuration
+- `FB-CHANGELOG` — change history
+- `FB-ENV-TEMPLATE` — non-secret environment template
 
 Possible automatic statuses:
 
 - `observed`
 - `not_observed`
+- `attention`
 
 These statuses are deliberately not named `passed` or `failed`. Fieldbook detects evidence artifacts; it does not prove their quality or correctness.
 
@@ -119,6 +130,37 @@ Stores the owner responsible for the review.
 Stores an evidence reference. This can be a repository path, ticket ID, test artifact reference, or other non-sensitive evidence pointer.
 
 Do not store secrets or sensitive production evidence directly in this field.
+
+## `fieldbook codevet`
+
+Consumes an existing CodeVet JSON report without running CodeVet itself.
+
+```text
+fieldbook codevet <report.json> [--attach] [--json]
+```
+
+CodeVet can generate the input with:
+
+```sh
+npx codevet-cli scan --json codevet-report.json
+```
+
+Examples:
+
+```sh
+fieldbook codevet codevet-report.json
+fieldbook codevet codevet-report.json --json
+fieldbook codevet codevet-report.json --attach
+```
+
+Fieldbook normalizes:
+
+- scanner coverage: `completed`, `skipped`, `failed`, or `not_applicable`
+- finding counts by CodeVet category
+- high/critical counts where CodeVet provides severity
+- whether the evidence is incomplete
+
+`--attach` writes only this normalized summary plus the report path into `.fieldbook/readiness.json`. It never copies raw CodeVet findings and never changes `FB-SECURITY` automatically.
 
 ## `fieldbook report`
 

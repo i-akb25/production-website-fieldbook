@@ -74,6 +74,7 @@ bunx fieldbook check
 fieldbook init
 fieldbook check
 fieldbook review FB-PRIVACY approved --owner "release owner" --evidence "docs/privacy-review.md"
+fieldbook codevet codevet-report.json --attach
 fieldbook report
 fieldbook doctor
 ```
@@ -90,7 +91,7 @@ Creates `.fieldbook/readiness.json` with all manual review gates in the `unrevie
 
 ### `fieldbook check [--json]`
 
-Reports repository **observations** such as whether documentation, ignore rules, a lockfile, a test script, CI workflow, license, or security policy can be detected.
+Reports framework-neutral repository **observations** including recognized manifests/ecosystems, lock or integrity files, test/build/lint/typecheck entry points, CI and release workflows, license/security/ownership records, dependency-update automation, changelog presence, and environment templates.
 
 These are observations only, not pass/fail certification.
 
@@ -111,6 +112,12 @@ fieldbook review FB-A11Y approved \
   --owner "frontend owner" \
   --evidence "docs/accessibility-review.md"
 ```
+
+### `fieldbook codevet <report.json> [--attach] [--json]`
+
+Consumes the JSON file produced by CodeVet's `codevet scan --json <path>` command. Fieldbook stores only a normalized summary when `--attach` is used; it does not copy raw findings into the readiness record.
+
+The imported evidence preserves skipped/failed coverage and finding counts. It **never** changes `FB-SECURITY` to `approved` automatically.
 
 ### `fieldbook report [--json]`
 
@@ -146,7 +153,7 @@ These review states are entered by people. Fieldbook does not independently veri
 
 ## Repository observations
 
-The current CLI can observe:
+The CLI can observe:
 
 | ID | Observation |
 | --- | --- |
@@ -157,6 +164,16 @@ The current CLI can observe:
 | `FB-CI` | GitHub Actions workflow |
 | `FB-LICENSE` | Repository license record |
 | `FB-SECURITY-POLICY` | Security reporting policy |
+| `FB-MANIFEST` | Recognized ecosystem/project manifest |
+| `FB-LOCK-CONSISTENCY` | Multiple lock families that may need review |
+| `FB-BUILD` | Build/compile script |
+| `FB-LINT` | Lint/check script |
+| `FB-TYPECHECK` | Type-check script |
+| `FB-RELEASE-AUTOMATION` | Release/deploy workflow |
+| `FB-OWNERSHIP` | CODEOWNERS |
+| `FB-DEPENDENCY-AUTOMATION` | Dependabot or Renovate config |
+| `FB-CHANGELOG` | Change-history artifact |
+| `FB-ENV-TEMPLATE` | Non-secret environment template |
 
 An observed item means only that the corresponding artifact was found. It does not prove that the artifact is complete, correct, effective, or appropriate for the project.
 
@@ -187,3 +204,27 @@ For security scanning, use dedicated security tooling in addition to Fieldbook.
 ## License
 
 MIT © 2026 AKB Studio
+
+## Optional CodeVet evidence
+
+Fieldbook and CodeVet have separate responsibilities. CodeVet scans for security findings; Fieldbook records release evidence and review state.
+
+Generate a report with CodeVet:
+
+```sh
+npx codevet-cli scan --json codevet-report.json
+```
+
+Then inspect it with Fieldbook:
+
+```sh
+fieldbook codevet codevet-report.json
+```
+
+To attach only the normalized summary to `.fieldbook/readiness.json`:
+
+```sh
+fieldbook codevet codevet-report.json --attach
+```
+
+Fieldbook intentionally does not copy secret values or raw findings into its readiness record and does not auto-approve the security review.
