@@ -26,8 +26,12 @@ jobs:
       - name: Validate structure, schemas, links, controls, examples, and safety markers
         run: npm run validate
 
-      - name: Test Fieldbook CLI preview
+      - name: Test Fieldbook CLI
         run: node --test packages/cli/test/*.test.mjs
+
+      - name: Verify npm package contents
+        working-directory: packages/cli
+        run: npm pack --dry-run
 
       - name: Verify release checksums
         run: npm run checksums:verify
