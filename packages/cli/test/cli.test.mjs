@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -18,7 +18,7 @@ function cli(dir,...args) {
 test("version is stable",()=>sandbox(dir=>{
   const result=cli(dir,"--version");
   assert.equal(result.status,0,result.stderr);
-  assert.equal(result.stdout.trim(),"1.0.1");
+  assert.equal(result.stdout.trim(),"1.0.2");
 }));
 
 test("init creates a local review and never overwrites it",()=>sandbox(dir=>{
@@ -27,7 +27,7 @@ test("init creates a local review and never overwrites it",()=>sandbox(dir=>{
   const file=path.join(dir,".fieldbook/readiness.json");
   const before=readFileSync(file,"utf8");
   const parsed=JSON.parse(before);
-  assert.equal(parsed.fieldbook_version,"1.0.1");
+  assert.equal(parsed.fieldbook_version,"1.0.2");
   assert.equal(parsed.reviews["FB-PRIVACY"].status,"unreviewed");
   const second=cli(dir,"init");
   assert.equal(second.status,2);
@@ -59,3 +59,10 @@ test("review updates only a known manual gate",()=>sandbox(dir=>{
 test("unknown command fails clearly",()=>sandbox(dir=>{
   assert.equal(cli(dir,"unknown").status,2);
 }));
+
+test("package exposes the fieldbook executable",()=>{
+  const packageJson=JSON.parse(readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)),"../package.json"),"utf8"));
+  assert.equal(packageJson.name,"fieldbook");
+  assert.equal(packageJson.bin,"bin/fieldbook.mjs");
+  assert.equal(existsSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)),"../bin/fieldbook.mjs")),true);
+});

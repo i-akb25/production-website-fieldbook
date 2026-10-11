@@ -3,7 +3,7 @@ import { existsSync, readFileSync, mkdirSync, writeFileSync, readdirSync } from 
 import path from "node:path";
 import process from "node:process";
 
-const VERSION = "1.0.1";
+const VERSION = "1.0.2";
 const args = process.argv.slice(2);
 const command = args[0] ?? "help";
 const root = process.cwd();
