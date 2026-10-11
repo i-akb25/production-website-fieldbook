@@ -54,13 +54,15 @@ It refuses to overwrite an existing record during `init`.
 
 Fieldbook can detect repository signals such as:
 
-- project documentation
-- ignore rules
+- recognized project manifests and ecosystems
+- project documentation and ignore rules
 - dependency lockfiles or integrity files
-- a package test script
-- GitHub Actions workflows
-- a repository license
-- a security reporting policy
+- test, build, lint and type-check entry points
+- GitHub Actions CI and release/deploy workflows
+- license, security policy and CODEOWNERS records
+- dependency-update automation
+- changelog and environment-template artifacts
+- multi-lock situations that deserve review rather than an automatic failure
 
 These are observations, not pass/fail claims. The presence of a file does not prove that the underlying implementation is correct.
 
@@ -116,6 +118,23 @@ Fieldbook is not:
 - a production approval authority
 
 Use dedicated security, accessibility, legal, privacy, and operational review processes where required.
+
+## Optional CodeVet evidence
+
+Fieldbook can consume an existing CodeVet JSON report without running CodeVet itself:
+
+```sh
+npx codevet scan --json codevet-report.json
+npx fieldbook codevet codevet-report.json --attach
+```
+
+Only normalized coverage and finding counts are attached to the Fieldbook record. Raw findings are not copied, incomplete scans remain visibly incomplete, and CodeVet evidence never auto-approves `FB-SECURITY`.
+
+## Trusted npm publishing
+
+Fieldbook's GitHub Actions release workflow uses npm Trusted Publishing/OIDC. It requests `id-token: write`, uses a GitHub-hosted runner, performs tests and a package dry-run, refuses already-published versions, and publishes without a reusable `NPM_TOKEN`.
+
+The npm package must have the repository's `publish.yml` workflow configured as an allowed trusted publisher before the workflow can publish.
 
 ## Companion controls
 
