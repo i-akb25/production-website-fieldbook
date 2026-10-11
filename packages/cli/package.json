@@ -1,0 +1,23 @@
+{
+  "name": "@akb-studio/fieldbook",
+  "version": "0.1.0",
+  "description": "Local-first production-readiness checks and records for The Production Website",
+  "type": "module",
+  "bin": {
+    "fieldbook": "./bin/fieldbook.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "license": "SEE LICENSES DIRECTORY",
+  "publishConfig": {
+    "access": "public"
+  }
+}
