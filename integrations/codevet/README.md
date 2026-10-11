@@ -12,7 +12,7 @@ The integration is intentionally one-way and local:
 Example:
 
 ```sh
-npx codevet scan --json codevet-report.json
+npx codevet-cli scan --json codevet-report.json
 npx fieldbook codevet codevet-report.json --attach
 ```
 
