@@ -47,4 +47,4 @@ Fieldbook never automatically changes `FB-SECURITY` to `approved`. Human review 
 
 When `--attach` is used, Fieldbook stores only normalized counts, coverage state, interpretation, and the local report path. Raw findings are not copied into the readiness record. This avoids duplicating secret values or sensitive evidence.
 
-The original CodeVet report remains under the user's control and should be handled according to the project's security policy.
+The original CodeVet report remains under the user's control and should be handled according to the project's security policy. The recommended `codevet-report.json` filename is ignored by this repository by default because raw scan output may contain sensitive paths, metadata, or findings. If a team intentionally versions security evidence, review and redact the report first and use an explicit evidence-retention policy.
